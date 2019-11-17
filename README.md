@@ -1,4 +1,4 @@
-# Particle-Simulation
+# Particle in electric and magnetic fields Simulation
 Simulation of particle motion due to electric and magnetic fields
 
 Simulates particle motion using numerical runge-kutta method, more specifically Euler's method by solving the lorentz force equaiton in all directions and plotting the results.
