@@ -13,15 +13,15 @@ def B(t,x,y,z):
     return [0,1,0]
 
 def E(t,x,y,z):
-    return [0,0,1]
+    return [0,1,0]
 
 # ----------------------------------------------------
 
-v = [0,0,0]
+v = [5,0,0]
 
 tn = 0	#t_0
 xn = 0	#x_0
-yn = 0	#y_0
+yn = 1	#y_0
 zn = 0	#z_0
 
 xd = v[0]
@@ -42,7 +42,7 @@ q = 1
 
 
 #euler's method
-h = 0.001
+h = 0.1
 tn = tn + h
 xdn = xd + h*q*(Ex+yd*Bz - zd*By)
 ydn = yd + h*q*(Ey+zd*Bx - xd*Bz)
@@ -78,10 +78,16 @@ while tn <= tf:
 	Ex = E(tn,xn,yn,zn)[0]
 	Ey = E(tn,xn,yn,zn)[1]
 	Ez = E(tn,xn,yn,zn)[2]
+    
+	xdn_mid = xdn + h*q*(Ex+ydn*Bz - zdn*By)
+	ydn_mid = ydn + h*q*(Ey+zdn*Bx - xdn*Bz)
+	zdn_mid = zdn + h*q*(Ez+xdn*By - ydn*Bx )
+    
 	tn = tn + h
-	xdn_new = xdn + h*q*(Ex+ydn*Bz - zdn*By)
-	ydn_new = ydn + h*q*(Ey+zdn*Bx - xdn*Bz)
-	zdn_new = zdn + h*q*(Ez+xdn*By - ydn*Bx )
+    
+	xdn_new = xdn + (h/2)*q*( (Ex+ydn*Bz - zdn*By) + (Ex+ydn_mid*Bz - zdn_mid*By) )
+	ydn_new = ydn + (h/2)*q*( (Ey+zdn*Bx - xdn*Bz) + (Ey+zdn_mid*Bx - xdn_mid*Bz) )
+	zdn_new = zdn + (h/2)*q*( (Ez+xdn*By - ydn*Bx) + (Ez+xdn_mid*By - ydn_mid*Bx) )
 
 	xn = xn + h*xdn_new
 	yn = yn + h*ydn_new
