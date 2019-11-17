@@ -10,10 +10,10 @@ import numpy as np
 # ----------------------------------------------------
 #set variable magnetic fields if necessary
 def B(t,x,y,z):
-    return [0,0,0]
+    return [0,1,0]
 
 def E(t,x,y,z):
-    return [t**2,np.sin(t),1]
+    return [0,0,1]
 
 # ----------------------------------------------------
 
@@ -42,20 +42,32 @@ q = 1
 
 
 #euler's method
-h = 0.01
+h = 0.001
 tn = tn + h
 xdn = xd + h*q*(Ex+yd*Bz - zd*By)
 ydn = yd + h*q*(Ey+zd*Bx - xd*Bz)
 zdn = zd + h*q*(Ez+xd*By - yd*Bx )
 
-xn = xn + h*xdn
-yn = yn + h*ydn
-zn = zn + h*zdn
+
 
 
 x = []
 y = []
 z = []
+
+#append intial positions
+x.append(xn)
+y.append(yn)
+z.append(zn)
+
+xn = xn + h*xdn
+yn = yn + h*ydn
+zn = zn + h*zdn
+#append positions calculated from initial velocity
+x.append(xn)
+y.append(yn)
+z.append(zn)
+
 tf = 30	#t_final
 while tn <= tf:
     # finds B and E fields at location and time of particle then calculates the resulting motion due to this effect
