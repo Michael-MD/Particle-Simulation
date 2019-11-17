@@ -1,40 +1,48 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 unused import
+import numpy as np
+
+
 
 #intial conditions
 
+
+# ----------------------------------------------------
+#set variable magnetic fields if necessary
+def B(t,x,y,z):
+    return [0,0,0]
+
+def E(t,x,y,z):
+    return [t**2,np.sin(t),1]
+
+# ----------------------------------------------------
+
 v = [0,0,0]
-B = [1,0,0]
-
-xd = v[0]
-yd = v[1]
-zd = v[2]
-
-Bx = B[0]
-By = B[1]
-Bz = B[2]
-
-E = [0,0,1]
-Ex = E[0]
-Ey = E[1]
-Ez = E[2]
-
-vxb = [ yd*Bz - zd*By, zd*Bx - xd*Bz, xd*By - yd*Bx ]
-
-q = 1
-F = q*(E+vxb)
-
-xdd = F[0]
-ydd = F[1]
-zdd = F[2]
 
 tn = 0	#t_0
 xn = 0	#x_0
 yn = 0	#y_0
 zn = 0	#z_0
 
+xd = v[0]
+yd = v[1]
+zd = v[2]
+
+Bx = B(tn,xn,yn,zn)[0]
+By = B(tn,xn,yn,zn)[1]
+Bz = B(tn,xn,yn,zn)[2]
+
+Ex = E(tn,xn,yn,zn)[0]
+Ey = E(tn,xn,yn,zn)[1]
+Ez = E(tn,xn,yn,zn)[2]
+
+vxb = [ yd*Bz - zd*By, zd*Bx - xd*Bz, xd*By - yd*Bx ]
+
+q = 1
+
+
 #euler's method
-h = 0.001
+h = 0.01
 tn = tn + h
 xdn = xd + h*q*(Ex+yd*Bz - zd*By)
 ydn = yd + h*q*(Ey+zd*Bx - xd*Bz)
@@ -44,11 +52,20 @@ xn = xn + h*xdn
 yn = yn + h*ydn
 zn = zn + h*zdn
 
+
 x = []
 y = []
 z = []
 tf = 30	#t_final
 while tn <= tf:
+    # finds B and E fields at location and time of particle then calculates the resulting motion due to this effect
+	Bx = B(tn,xn,yn,zn)[0]
+	By = B(tn,xn,yn,zn)[1]
+	Bz = B(tn,xn,yn,zn)[2]
+    
+	Ex = E(tn,xn,yn,zn)[0]
+	Ey = E(tn,xn,yn,zn)[1]
+	Ez = E(tn,xn,yn,zn)[2]
 	tn = tn + h
 	xdn_new = xdn + h*q*(Ex+ydn*Bz - zdn*By)
 	ydn_new = ydn + h*q*(Ey+zdn*Bx - xdn*Bz)
